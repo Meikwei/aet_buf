@@ -1,0 +1,184 @@
+syntax = "proto3";
+
+package aet_buf.sys_user;
+
+import "common/common.proto";
+import "validate/validate.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/Meikwei/aet_buf/sys_user";
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+		title: "sys_user";
+		version: "1.0";	
+  };
+  schemes: HTTP;
+};
+
+service sysUser {
+  // create sysUser
+  rpc Create(CreateSysUserRequest) returns (CreateSysUserReply) {
+    option (google.api.http)={
+      post: "/v1/sys_user/create",
+      body:"*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "创建用户"
+      operation_id: "create_sys_user"
+      tags: ["sys_user"]
+    };
+  }
+
+  // delete sysUser by id
+  rpc DeleteByID(DeleteSysUserByIDRequest) returns (DeleteSysUserByIDReply) {
+    option (google.api.http)={
+      delete: "/v1/sys_user/delete/{id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "删除用户"
+      operation_id: "delete_sys_user_by_id"
+      tags: ["sys_user"]
+    };
+  }
+
+  // delete sysUser by batch id
+  rpc DeleteByIDs(DeleteSysUserByIDsRequest) returns (DeleteSysUserByIDsReply) {
+    option (google.api.http)={
+      post: "/v1/sys_user/delete/batch"
+      body:"ids"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "批量删除用户"
+      operation_id: "delete_sys_user_by_ids"
+      tags: ["sys_user"]
+    };
+  }
+  // update sysUser by id
+  rpc UpdateByID(UpdateSysUserByIDRequest) returns (UpdateSysUserByIDReply) {
+    option (google.api.http)={
+      put: "/v1/sys_user/update/{id}",
+      body:"*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "通过ID更新用户"
+      operation_id: "update_sys_user_by_id"
+      tags: ["sys_user"]
+    };
+  }
+
+  // get sysUser by id
+  rpc GetByID(GetSysUserByIDRequest) returns (GetSysUserByIDReply) {
+    option (google.api.http)={
+      get: "/v1/sys_user/get/{id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "通过ID获取用户"
+      operation_id: "get_sys_user_by_id"
+      tags: ["sys_user"]
+    };
+  }
+
+  // get sysUser by condition
+  rpc GetByCondition(GetSysUserByConditionRequest) returns (GetSysUserByConditionReply) {
+    option (google.api.http)={
+      post: "/v1/sys_user/getByCondition",
+      body:"*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "通过条件获取用户"
+      operation_id: "get_sys_user_by_condition"
+      tags: ["sys_user"]
+    };
+  }
+
+}
+
+// Some notes on defining fields under message:
+// Fill in the validate rules https://github.com/envoyproxy/protoc-gen-validate#constraint-rules
+
+message CreateSysUserRequest {
+	string userName = 1 [(validate.rules).string.min_len = 2];  // 用户名昵称
+	string userPassword = 3 [(validate.rules).string.min_len = 6];  // 用户密码
+	string userPhone = 4 [(validate.rules).string = {ignore_empty: true, len: 11}];  // 用户手机号
+	string userAvatar = 5 [(validate.rules).string = {ignore_empty: true}];  // 用户头像
+}
+
+message CreateSysUserReply {
+  uint64 id = 1;
+}
+
+message DeleteSysUserByIDRequest {
+  uint64 id = 1 [(validate.rules).uint64.gt = 0];
+}
+
+message DeleteSysUserByIDReply {
+
+}
+
+message DeleteSysUserByIDsRequest {
+  repeated uint64 ids = 1 [(validate.rules).repeated.min_items = 1];
+}
+
+message DeleteSysUserByIDsReply {
+
+}
+
+message UpdateSysUserByIDRequest {
+	uint64 id = 1 [(validate.rules).uint64.gt = 0];  // 用户ID
+	string userName = 2;  // 用户名昵称
+	string userPassword = 4;  // 用户密码
+	string userPhone = 5;  // 用户手机号
+	string userAvatar = 6;  // 用户头像
+}
+
+message UpdateSysUserByIDReply {
+
+}
+
+message SysUser {
+	uint64 id = 1;  // 用户ID
+	string userName = 2;  // 用户名昵称
+	string userNumber = 3;  // 用户编号
+	string userPassword = 4;  // 用户密码
+	string userPhone = 5;  // 用户手机号
+	string userAvatar = 6;  // 用户头像
+	string createUser = 7;  // 创建人
+	string updateUser = 8;  // 更新人
+	string createdAt = 9;  // 创建时间
+	string updatedAt = 10;  // 更新时间
+}
+
+message GetSysUserByIDRequest {
+  uint64 id = 1 [(validate.rules).uint64.gt = 0];
+}
+
+message GetSysUserByIDReply {
+  SysUser sysUser = 1;
+}
+
+message GetSysUserByConditionRequest {
+  common.Conditions conditions = 1;
+  common.Params params =2;
+}
+
+message GetSysUserByConditionReply {
+  SysUser sysUser = 1;
+}
+
+message ListSysUserByIDsRequest {
+  repeated uint64 ids = 1 [(validate.rules).repeated.min_items = 1];
+}
+
+message ListSysUserByIDsReply {
+  repeated SysUser sysUsers = 1;
+}
+
+
+
+message ListSysUserReply {
+  int64 total =1;
+  repeated SysUser sysUsers = 2;
+}
+
+

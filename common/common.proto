@@ -1,0 +1,93 @@
+syntax = "proto3";
+package aet_buf.common;
+
+import  "google/protobuf/timestamp.proto";
+import "validate/validate.proto";
+
+option go_package = "github.com/Meikwei/aet_buf/common";
+
+/**
+ * 分页请求消息格式
+ */
+message RequestPagination {
+  int32 page_number= 1; // 页码
+  int32 show_number = 2; // 每页显示数量
+}
+
+message BaseResponse{
+  int32 code = 1; // 状态码
+  string message = 2; // 状态信息
+}
+// 定义错误码枚举
+enum ErrorCode {
+  // 必须定义一个0值，代表无错误
+  SUCCESS = 0;
+  INVALID_ARGUMENT = 1;
+  UNAUTHORIZED = 2;
+  FORBIDDEN = 3;
+  NOT_FOUND = 4;
+  INVALID_REQUEST = 5;
+  INTERNAL_SERVER_ERROR = 1001;
+  SERVICE_UNAVAILABLE = 1002;
+  DEADLINE_EXCEEDED = 1003;
+  RESOURCE_EXHAUSTED = 1004;
+  FAILED_PRECONDITION = 1005;
+  NETWORK_FAILURE = 3001;
+  RPC_FAILED = 3002;
+  CUSTOM_ERROR = 4001;
+}
+// 枚举类型定义操作符，以替代原始字符串
+enum Operator {
+  EQUAL = 0;
+  NOT_EQUAL = 1;
+  GREATER_THAN = 2;
+  GREATER_THAN_OR_EQUAL = 3;
+  LESS_THAN = 4;
+  LESS_THAN_OR_EQUAL = 5;
+  LIKE = 6;
+  IN = 7;
+}
+
+// 枚举类型定义逻辑连接方式
+enum LogicType {
+  AND = 0;
+  OR = 1;
+}
+
+// Value消息类型，用于封装不同数据类型的值
+message Value {
+  oneof value {
+    int32 int_value = 1;
+    float float_value = 2;
+    string string_value = 3;
+    bool bool_value = 4;
+    bytes bytes_value = 5;
+    google.protobuf.Timestamp date_value = 6; // 用于单个日期
+    DateRange date_range = 7; // 用于日期范围
+  }
+}
+
+// DateRange消息类型，用于表示日期范围
+message DateRange {
+  google.protobuf.Timestamp start_date = 1;
+  google.protobuf.Timestamp end_date = 2;
+}
+
+// Column消息类型，用于表示数据库查询条件中的列名、条件表达式、列值以及逻辑连接方式
+message Column {
+  string name = 1;  // column name
+  Operator exp = 2; // expressions, default to EQUAL when the value is not set
+  Value value = 3; // column value, represented as a Value message
+  LogicType logic = 4; // logical type, defaults to AND when value is not set
+}
+
+message Params {
+  uint32 page = 1 [(validate.rules).uint32.gt = 0];; // page number, starting from 0
+  uint32 limit = 2 [(validate.rules).uint32.gt = 0]; // lines per page
+  string sort = 3; // sorted fields, multi-column sorting separated by commas
+  repeated Column columns = 4; // query conditions
+}
+
+message Conditions {
+  repeated Column columns = 1; // query conditions
+}

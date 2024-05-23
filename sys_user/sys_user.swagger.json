@@ -1,0 +1,526 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "sys_user",
+    "version": "1.0"
+  },
+  "tags": [
+    {
+      "name": "sysUser"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/sys_user/create": {
+      "post": {
+        "summary": "创建用户",
+        "operationId": "create_sys_user",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/sys_userCreateSysUserReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/sys_userCreateSysUserRequest"
+            }
+          }
+        ],
+        "tags": [
+          "sys_user"
+        ]
+      }
+    },
+    "/v1/sys_user/delete/batch": {
+      "post": {
+        "summary": "批量删除用户",
+        "operationId": "delete_sys_user_by_ids",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/sys_userDeleteSysUserByIDsReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uint64"
+              }
+            }
+          }
+        ],
+        "tags": [
+          "sys_user"
+        ]
+      }
+    },
+    "/v1/sys_user/delete/{id}": {
+      "delete": {
+        "summary": "删除用户",
+        "operationId": "delete_sys_user_by_id",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/sys_userDeleteSysUserByIDReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "sys_user"
+        ]
+      }
+    },
+    "/v1/sys_user/get/{id}": {
+      "get": {
+        "summary": "通过ID获取用户",
+        "operationId": "get_sys_user_by_id",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/sys_userGetSysUserByIDReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "sys_user"
+        ]
+      }
+    },
+    "/v1/sys_user/getByCondition": {
+      "post": {
+        "summary": "通过条件获取用户",
+        "operationId": "get_sys_user_by_condition",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/sys_userGetSysUserByConditionReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/sys_userGetSysUserByConditionRequest"
+            }
+          }
+        ],
+        "tags": [
+          "sys_user"
+        ]
+      }
+    },
+    "/v1/sys_user/update/{id}": {
+      "put": {
+        "summary": "通过ID更新用户",
+        "operationId": "update_sys_user_by_id",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/sys_userUpdateSysUserByIDReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "用户ID",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/sysUserUpdateByIDBody"
+            }
+          }
+        ],
+        "tags": [
+          "sys_user"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "aet_bufcommonValue": {
+      "type": "object",
+      "properties": {
+        "intValue": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "floatValue": {
+          "type": "number",
+          "format": "float"
+        },
+        "stringValue": {
+          "type": "string"
+        },
+        "boolValue": {
+          "type": "boolean"
+        },
+        "bytesValue": {
+          "type": "string",
+          "format": "byte"
+        },
+        "dateValue": {
+          "type": "string",
+          "format": "date-time",
+          "title": "用于单个日期"
+        },
+        "dateRange": {
+          "$ref": "#/definitions/commonDateRange",
+          "title": "用于日期范围"
+        }
+      },
+      "title": "Value消息类型，用于封装不同数据类型的值"
+    },
+    "commonColumn": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "column name"
+        },
+        "exp": {
+          "$ref": "#/definitions/commonOperator",
+          "title": "expressions, default to EQUAL when the value is not set"
+        },
+        "value": {
+          "$ref": "#/definitions/aet_bufcommonValue",
+          "title": "column value, represented as a Value message"
+        },
+        "logic": {
+          "$ref": "#/definitions/commonLogicType",
+          "title": "logical type, defaults to AND when value is not set"
+        }
+      },
+      "title": "Column消息类型，用于表示数据库查询条件中的列名、条件表达式、列值以及逻辑连接方式"
+    },
+    "commonConditions": {
+      "type": "object",
+      "properties": {
+        "columns": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/commonColumn"
+          },
+          "title": "query conditions"
+        }
+      }
+    },
+    "commonDateRange": {
+      "type": "object",
+      "properties": {
+        "startDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endDate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "title": "DateRange消息类型，用于表示日期范围"
+    },
+    "commonLogicType": {
+      "type": "string",
+      "enum": [
+        "AND",
+        "OR"
+      ],
+      "default": "AND",
+      "title": "枚举类型定义逻辑连接方式"
+    },
+    "commonOperator": {
+      "type": "string",
+      "enum": [
+        "EQUAL",
+        "NOT_EQUAL",
+        "GREATER_THAN",
+        "GREATER_THAN_OR_EQUAL",
+        "LESS_THAN",
+        "LESS_THAN_OR_EQUAL",
+        "LIKE",
+        "IN"
+      ],
+      "default": "EQUAL",
+      "title": "枚举类型定义操作符，以替代原始字符串"
+    },
+    "commonParams": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "title": "lines per page"
+        },
+        "sort": {
+          "type": "string",
+          "title": "sorted fields, multi-column sorting separated by commas"
+        },
+        "columns": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/commonColumn"
+          },
+          "title": "query conditions"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "sysUserUpdateByIDBody": {
+      "type": "object",
+      "properties": {
+        "userName": {
+          "type": "string",
+          "title": "用户名昵称"
+        },
+        "userPassword": {
+          "type": "string",
+          "title": "用户密码"
+        },
+        "userPhone": {
+          "type": "string",
+          "title": "用户手机号"
+        },
+        "userAvatar": {
+          "type": "string",
+          "title": "用户头像"
+        }
+      }
+    },
+    "sys_userCreateSysUserReply": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "sys_userCreateSysUserRequest": {
+      "type": "object",
+      "properties": {
+        "userName": {
+          "type": "string",
+          "title": "用户名昵称"
+        },
+        "userPassword": {
+          "type": "string",
+          "title": "用户密码"
+        },
+        "userPhone": {
+          "type": "string",
+          "title": "用户手机号"
+        },
+        "userAvatar": {
+          "type": "string",
+          "title": "用户头像"
+        }
+      }
+    },
+    "sys_userDeleteSysUserByIDReply": {
+      "type": "object"
+    },
+    "sys_userDeleteSysUserByIDsReply": {
+      "type": "object"
+    },
+    "sys_userGetSysUserByConditionReply": {
+      "type": "object",
+      "properties": {
+        "sysUser": {
+          "$ref": "#/definitions/sys_userSysUser"
+        }
+      }
+    },
+    "sys_userGetSysUserByConditionRequest": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "$ref": "#/definitions/commonConditions"
+        },
+        "params": {
+          "$ref": "#/definitions/commonParams"
+        }
+      }
+    },
+    "sys_userGetSysUserByIDReply": {
+      "type": "object",
+      "properties": {
+        "sysUser": {
+          "$ref": "#/definitions/sys_userSysUser"
+        }
+      }
+    },
+    "sys_userSysUser": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64",
+          "title": "用户ID"
+        },
+        "userName": {
+          "type": "string",
+          "title": "用户名昵称"
+        },
+        "userNumber": {
+          "type": "string",
+          "title": "用户编号"
+        },
+        "userPassword": {
+          "type": "string",
+          "title": "用户密码"
+        },
+        "userPhone": {
+          "type": "string",
+          "title": "用户手机号"
+        },
+        "userAvatar": {
+          "type": "string",
+          "title": "用户头像"
+        },
+        "createUser": {
+          "type": "string",
+          "title": "创建人"
+        },
+        "updateUser": {
+          "type": "string",
+          "title": "更新人"
+        },
+        "createdAt": {
+          "type": "string",
+          "title": "创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "title": "更新时间"
+        }
+      }
+    },
+    "sys_userUpdateSysUserByIDReply": {
+      "type": "object"
+    }
+  }
+}
