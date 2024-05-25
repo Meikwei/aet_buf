@@ -186,6 +186,39 @@
         ]
       }
     },
+    "/v1/sys_user/list": {
+      "post": {
+        "summary": "获取用户列表",
+        "operationId": "list_sys_user",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/sys_userListSysUserReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/sys_userListSysUserRequest"
+            }
+          }
+        ],
+        "tags": [
+          "sys_user"
+        ]
+      }
+    },
     "/v1/sys_user/listByIDs": {
       "post": {
         "summary": "通过ID批量获取用户",
@@ -194,7 +227,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/sys_userListUserByIDsReply"
+              "$ref": "#/definitions/sys_userListSysUserByIDsReply"
             }
           },
           "default": {
@@ -231,7 +264,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/sys_userListUserByLastIDReply"
+              "$ref": "#/definitions/sys_userListSysUserByLastIDReply"
             }
           },
           "default": {
@@ -247,7 +280,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/sys_userListUserByLastIDRequest"
+              "$ref": "#/definitions/sys_userListSysUserByLastIDRequest"
             }
           }
         ],
@@ -458,9 +491,6 @@
       "properties": {
         "conditions": {
           "$ref": "#/definitions/commonConditions"
-        },
-        "params": {
-          "$ref": "#/definitions/commonParams"
         }
       }
     },
@@ -472,7 +502,19 @@
         }
       }
     },
-    "sys_userListUserByIDsReply": {
+    "sys_userListSysUserByIDsReply": {
+      "type": "object",
+      "properties": {
+        "sysUsers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/sys_userSysUser"
+          }
+        }
+      }
+    },
+    "sys_userListSysUserByLastIDReply": {
       "type": "object",
       "properties": {
         "users": {
@@ -484,19 +526,7 @@
         }
       }
     },
-    "sys_userListUserByLastIDReply": {
-      "type": "object",
-      "properties": {
-        "users": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/sys_userSysUser"
-          }
-        }
-      }
-    },
-    "sys_userListUserByLastIDRequest": {
+    "sys_userListSysUserByLastIDRequest": {
       "type": "object",
       "properties": {
         "lastID": {
@@ -515,19 +545,27 @@
         }
       }
     },
-    "sys_userListUserReply": {
+    "sys_userListSysUserReply": {
       "type": "object",
       "properties": {
         "total": {
           "type": "string",
           "format": "int64"
         },
-        "users": {
+        "sysUsers": {
           "type": "array",
           "items": {
             "type": "object",
             "$ref": "#/definitions/sys_userSysUser"
           }
+        }
+      }
+    },
+    "sys_userListSysUserRequest": {
+      "type": "object",
+      "properties": {
+        "params": {
+          "$ref": "#/definitions/commonParams"
         }
       }
     },

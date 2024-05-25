@@ -1349,35 +1349,6 @@ func (m *GetSysUserByConditionRequest) validate(all bool) error {
 		}
 	}
 
-	if all {
-		switch v := interface{}(m.GetParams()).(type) {
-		case interface{ ValidateAll() error }:
-			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, GetSysUserByConditionRequestValidationError{
-					field:  "Params",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		case interface{ Validate() error }:
-			if err := v.Validate(); err != nil {
-				errors = append(errors, GetSysUserByConditionRequestValidationError{
-					field:  "Params",
-					reason: "embedded message failed validation",
-					cause:  err,
-				})
-			}
-		}
-	} else if v, ok := interface{}(m.GetParams()).(interface{ Validate() error }); ok {
-		if err := v.Validate(); err != nil {
-			return GetSysUserByConditionRequestValidationError{
-				field:  "Params",
-				reason: "embedded message failed validation",
-				cause:  err,
-			}
-		}
-	}
-
 	if len(errors) > 0 {
 		return GetSysUserByConditionRequestMultiError(errors)
 	}
@@ -1975,271 +1946,22 @@ var _ interface {
 	ErrorName() string
 } = ListSysUserReplyValidationError{}
 
-// Validate checks the field values on ListUserByIDsRequest with the rules
-// defined in the proto definition for this message. If any rules are
+// Validate checks the field values on ListSysUserByLastIDRequest with the
+// rules defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *ListUserByIDsRequest) Validate() error {
+func (m *ListSysUserByLastIDRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on ListUserByIDsRequest with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// ListUserByIDsRequestMultiError, or nil if none found.
-func (m *ListUserByIDsRequest) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *ListUserByIDsRequest) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	if len(m.GetIds()) < 1 {
-		err := ListUserByIDsRequestValidationError{
-			field:  "Ids",
-			reason: "value must contain at least 1 item(s)",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
-	if len(errors) > 0 {
-		return ListUserByIDsRequestMultiError(errors)
-	}
-
-	return nil
-}
-
-// ListUserByIDsRequestMultiError is an error wrapping multiple validation
-// errors returned by ListUserByIDsRequest.ValidateAll() if the designated
-// constraints aren't met.
-type ListUserByIDsRequestMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m ListUserByIDsRequestMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m ListUserByIDsRequestMultiError) AllErrors() []error { return m }
-
-// ListUserByIDsRequestValidationError is the validation error returned by
-// ListUserByIDsRequest.Validate if the designated constraints aren't met.
-type ListUserByIDsRequestValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e ListUserByIDsRequestValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e ListUserByIDsRequestValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e ListUserByIDsRequestValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e ListUserByIDsRequestValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e ListUserByIDsRequestValidationError) ErrorName() string {
-	return "ListUserByIDsRequestValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e ListUserByIDsRequestValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sListUserByIDsRequest.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = ListUserByIDsRequestValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = ListUserByIDsRequestValidationError{}
-
-// Validate checks the field values on ListUserByIDsReply with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the first error encountered is returned, or nil if there are no violations.
-func (m *ListUserByIDsReply) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on ListUserByIDsReply with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// ListUserByIDsReplyMultiError, or nil if none found.
-func (m *ListUserByIDsReply) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *ListUserByIDsReply) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	for idx, item := range m.GetUsers() {
-		_, _ = idx, item
-
-		if all {
-			switch v := interface{}(item).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ListUserByIDsReplyValidationError{
-						field:  fmt.Sprintf("Users[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, ListUserByIDsReplyValidationError{
-						field:  fmt.Sprintf("Users[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return ListUserByIDsReplyValidationError{
-					field:  fmt.Sprintf("Users[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
-
-	if len(errors) > 0 {
-		return ListUserByIDsReplyMultiError(errors)
-	}
-
-	return nil
-}
-
-// ListUserByIDsReplyMultiError is an error wrapping multiple validation errors
-// returned by ListUserByIDsReply.ValidateAll() if the designated constraints
-// aren't met.
-type ListUserByIDsReplyMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m ListUserByIDsReplyMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m ListUserByIDsReplyMultiError) AllErrors() []error { return m }
-
-// ListUserByIDsReplyValidationError is the validation error returned by
-// ListUserByIDsReply.Validate if the designated constraints aren't met.
-type ListUserByIDsReplyValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e ListUserByIDsReplyValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e ListUserByIDsReplyValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e ListUserByIDsReplyValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e ListUserByIDsReplyValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e ListUserByIDsReplyValidationError) ErrorName() string {
-	return "ListUserByIDsReplyValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e ListUserByIDsReplyValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sListUserByIDsReply.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = ListUserByIDsReplyValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = ListUserByIDsReplyValidationError{}
-
-// Validate checks the field values on ListUserByLastIDRequest with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the first error encountered is returned, or nil if there are no violations.
-func (m *ListUserByLastIDRequest) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on ListUserByLastIDRequest with the
+// ValidateAll checks the field values on ListSysUserByLastIDRequest with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// ListUserByLastIDRequestMultiError, or nil if none found.
-func (m *ListUserByLastIDRequest) ValidateAll() error {
+// ListSysUserByLastIDRequestMultiError, or nil if none found.
+func (m *ListSysUserByLastIDRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *ListUserByLastIDRequest) validate(all bool) error {
+func (m *ListSysUserByLastIDRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -2249,7 +1971,7 @@ func (m *ListUserByLastIDRequest) validate(all bool) error {
 	// no validation rules for LastID
 
 	if m.GetLimit() <= 0 {
-		err := ListUserByLastIDRequestValidationError{
+		err := ListSysUserByLastIDRequestValidationError{
 			field:  "Limit",
 			reason: "value must be greater than 0",
 		}
@@ -2262,19 +1984,19 @@ func (m *ListUserByLastIDRequest) validate(all bool) error {
 	// no validation rules for Sort
 
 	if len(errors) > 0 {
-		return ListUserByLastIDRequestMultiError(errors)
+		return ListSysUserByLastIDRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// ListUserByLastIDRequestMultiError is an error wrapping multiple validation
-// errors returned by ListUserByLastIDRequest.ValidateAll() if the designated
-// constraints aren't met.
-type ListUserByLastIDRequestMultiError []error
+// ListSysUserByLastIDRequestMultiError is an error wrapping multiple
+// validation errors returned by ListSysUserByLastIDRequest.ValidateAll() if
+// the designated constraints aren't met.
+type ListSysUserByLastIDRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m ListUserByLastIDRequestMultiError) Error() string {
+func (m ListSysUserByLastIDRequestMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -2283,11 +2005,11 @@ func (m ListUserByLastIDRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m ListUserByLastIDRequestMultiError) AllErrors() []error { return m }
+func (m ListSysUserByLastIDRequestMultiError) AllErrors() []error { return m }
 
-// ListUserByLastIDRequestValidationError is the validation error returned by
-// ListUserByLastIDRequest.Validate if the designated constraints aren't met.
-type ListUserByLastIDRequestValidationError struct {
+// ListSysUserByLastIDRequestValidationError is the validation error returned
+// by ListSysUserByLastIDRequest.Validate if the designated constraints aren't met.
+type ListSysUserByLastIDRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -2295,24 +2017,24 @@ type ListUserByLastIDRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e ListUserByLastIDRequestValidationError) Field() string { return e.field }
+func (e ListSysUserByLastIDRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ListUserByLastIDRequestValidationError) Reason() string { return e.reason }
+func (e ListSysUserByLastIDRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ListUserByLastIDRequestValidationError) Cause() error { return e.cause }
+func (e ListSysUserByLastIDRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ListUserByLastIDRequestValidationError) Key() bool { return e.key }
+func (e ListSysUserByLastIDRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ListUserByLastIDRequestValidationError) ErrorName() string {
-	return "ListUserByLastIDRequestValidationError"
+func (e ListSysUserByLastIDRequestValidationError) ErrorName() string {
+	return "ListSysUserByLastIDRequestValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e ListUserByLastIDRequestValidationError) Error() string {
+func (e ListSysUserByLastIDRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -2324,14 +2046,14 @@ func (e ListUserByLastIDRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sListUserByLastIDRequest.%s: %s%s",
+		"invalid %sListSysUserByLastIDRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ListUserByLastIDRequestValidationError{}
+var _ error = ListSysUserByLastIDRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -2339,24 +2061,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ListUserByLastIDRequestValidationError{}
+} = ListSysUserByLastIDRequestValidationError{}
 
-// Validate checks the field values on ListUserByLastIDReply with the rules
+// Validate checks the field values on ListSysUserByLastIDReply with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *ListUserByLastIDReply) Validate() error {
+func (m *ListSysUserByLastIDReply) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on ListUserByLastIDReply with the rules
-// defined in the proto definition for this message. If any rules are
+// ValidateAll checks the field values on ListSysUserByLastIDReply with the
+// rules defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// ListUserByLastIDReplyMultiError, or nil if none found.
-func (m *ListUserByLastIDReply) ValidateAll() error {
+// ListSysUserByLastIDReplyMultiError, or nil if none found.
+func (m *ListSysUserByLastIDReply) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *ListUserByLastIDReply) validate(all bool) error {
+func (m *ListSysUserByLastIDReply) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -2370,7 +2092,7 @@ func (m *ListUserByLastIDReply) validate(all bool) error {
 			switch v := interface{}(item).(type) {
 			case interface{ ValidateAll() error }:
 				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ListUserByLastIDReplyValidationError{
+					errors = append(errors, ListSysUserByLastIDReplyValidationError{
 						field:  fmt.Sprintf("Users[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -2378,7 +2100,7 @@ func (m *ListUserByLastIDReply) validate(all bool) error {
 				}
 			case interface{ Validate() error }:
 				if err := v.Validate(); err != nil {
-					errors = append(errors, ListUserByLastIDReplyValidationError{
+					errors = append(errors, ListSysUserByLastIDReplyValidationError{
 						field:  fmt.Sprintf("Users[%v]", idx),
 						reason: "embedded message failed validation",
 						cause:  err,
@@ -2387,7 +2109,7 @@ func (m *ListUserByLastIDReply) validate(all bool) error {
 			}
 		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
 			if err := v.Validate(); err != nil {
-				return ListUserByLastIDReplyValidationError{
+				return ListSysUserByLastIDReplyValidationError{
 					field:  fmt.Sprintf("Users[%v]", idx),
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -2398,19 +2120,19 @@ func (m *ListUserByLastIDReply) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return ListUserByLastIDReplyMultiError(errors)
+		return ListSysUserByLastIDReplyMultiError(errors)
 	}
 
 	return nil
 }
 
-// ListUserByLastIDReplyMultiError is an error wrapping multiple validation
-// errors returned by ListUserByLastIDReply.ValidateAll() if the designated
+// ListSysUserByLastIDReplyMultiError is an error wrapping multiple validation
+// errors returned by ListSysUserByLastIDReply.ValidateAll() if the designated
 // constraints aren't met.
-type ListUserByLastIDReplyMultiError []error
+type ListSysUserByLastIDReplyMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m ListUserByLastIDReplyMultiError) Error() string {
+func (m ListSysUserByLastIDReplyMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -2419,11 +2141,11 @@ func (m ListUserByLastIDReplyMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m ListUserByLastIDReplyMultiError) AllErrors() []error { return m }
+func (m ListSysUserByLastIDReplyMultiError) AllErrors() []error { return m }
 
-// ListUserByLastIDReplyValidationError is the validation error returned by
-// ListUserByLastIDReply.Validate if the designated constraints aren't met.
-type ListUserByLastIDReplyValidationError struct {
+// ListSysUserByLastIDReplyValidationError is the validation error returned by
+// ListSysUserByLastIDReply.Validate if the designated constraints aren't met.
+type ListSysUserByLastIDReplyValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -2431,24 +2153,24 @@ type ListUserByLastIDReplyValidationError struct {
 }
 
 // Field function returns field value.
-func (e ListUserByLastIDReplyValidationError) Field() string { return e.field }
+func (e ListSysUserByLastIDReplyValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ListUserByLastIDReplyValidationError) Reason() string { return e.reason }
+func (e ListSysUserByLastIDReplyValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ListUserByLastIDReplyValidationError) Cause() error { return e.cause }
+func (e ListSysUserByLastIDReplyValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ListUserByLastIDReplyValidationError) Key() bool { return e.key }
+func (e ListSysUserByLastIDReplyValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ListUserByLastIDReplyValidationError) ErrorName() string {
-	return "ListUserByLastIDReplyValidationError"
+func (e ListSysUserByLastIDReplyValidationError) ErrorName() string {
+	return "ListSysUserByLastIDReplyValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e ListUserByLastIDReplyValidationError) Error() string {
+func (e ListSysUserByLastIDReplyValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -2460,14 +2182,14 @@ func (e ListUserByLastIDReplyValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sListUserByLastIDReply.%s: %s%s",
+		"invalid %sListSysUserByLastIDReply.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ListUserByLastIDReplyValidationError{}
+var _ error = ListSysUserByLastIDReplyValidationError{}
 
 var _ interface {
 	Field() string
@@ -2475,24 +2197,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ListUserByLastIDReplyValidationError{}
+} = ListSysUserByLastIDReplyValidationError{}
 
-// Validate checks the field values on ListUserRequest with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *ListUserRequest) Validate() error {
+// Validate checks the field values on ListSysUserRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListSysUserRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on ListUserRequest with the rules
+// ValidateAll checks the field values on ListSysUserRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// ListUserRequestMultiError, or nil if none found.
-func (m *ListUserRequest) ValidateAll() error {
+// ListSysUserRequestMultiError, or nil if none found.
+func (m *ListSysUserRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *ListUserRequest) validate(all bool) error {
+func (m *ListSysUserRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -2503,7 +2225,7 @@ func (m *ListUserRequest) validate(all bool) error {
 		switch v := interface{}(m.GetParams()).(type) {
 		case interface{ ValidateAll() error }:
 			if err := v.ValidateAll(); err != nil {
-				errors = append(errors, ListUserRequestValidationError{
+				errors = append(errors, ListSysUserRequestValidationError{
 					field:  "Params",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -2511,7 +2233,7 @@ func (m *ListUserRequest) validate(all bool) error {
 			}
 		case interface{ Validate() error }:
 			if err := v.Validate(); err != nil {
-				errors = append(errors, ListUserRequestValidationError{
+				errors = append(errors, ListSysUserRequestValidationError{
 					field:  "Params",
 					reason: "embedded message failed validation",
 					cause:  err,
@@ -2520,7 +2242,7 @@ func (m *ListUserRequest) validate(all bool) error {
 		}
 	} else if v, ok := interface{}(m.GetParams()).(interface{ Validate() error }); ok {
 		if err := v.Validate(); err != nil {
-			return ListUserRequestValidationError{
+			return ListSysUserRequestValidationError{
 				field:  "Params",
 				reason: "embedded message failed validation",
 				cause:  err,
@@ -2529,19 +2251,19 @@ func (m *ListUserRequest) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return ListUserRequestMultiError(errors)
+		return ListSysUserRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// ListUserRequestMultiError is an error wrapping multiple validation errors
-// returned by ListUserRequest.ValidateAll() if the designated constraints
+// ListSysUserRequestMultiError is an error wrapping multiple validation errors
+// returned by ListSysUserRequest.ValidateAll() if the designated constraints
 // aren't met.
-type ListUserRequestMultiError []error
+type ListSysUserRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m ListUserRequestMultiError) Error() string {
+func (m ListSysUserRequestMultiError) Error() string {
 	var msgs []string
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -2550,11 +2272,11 @@ func (m ListUserRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m ListUserRequestMultiError) AllErrors() []error { return m }
+func (m ListSysUserRequestMultiError) AllErrors() []error { return m }
 
-// ListUserRequestValidationError is the validation error returned by
-// ListUserRequest.Validate if the designated constraints aren't met.
-type ListUserRequestValidationError struct {
+// ListSysUserRequestValidationError is the validation error returned by
+// ListSysUserRequest.Validate if the designated constraints aren't met.
+type ListSysUserRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -2562,22 +2284,24 @@ type ListUserRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e ListUserRequestValidationError) Field() string { return e.field }
+func (e ListSysUserRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ListUserRequestValidationError) Reason() string { return e.reason }
+func (e ListSysUserRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ListUserRequestValidationError) Cause() error { return e.cause }
+func (e ListSysUserRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ListUserRequestValidationError) Key() bool { return e.key }
+func (e ListSysUserRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ListUserRequestValidationError) ErrorName() string { return "ListUserRequestValidationError" }
+func (e ListSysUserRequestValidationError) ErrorName() string {
+	return "ListSysUserRequestValidationError"
+}
 
 // Error satisfies the builtin error interface
-func (e ListUserRequestValidationError) Error() string {
+func (e ListSysUserRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -2589,14 +2313,14 @@ func (e ListUserRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sListUserRequest.%s: %s%s",
+		"invalid %sListSysUserRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ListUserRequestValidationError{}
+var _ error = ListSysUserRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -2604,140 +2328,4 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ListUserRequestValidationError{}
-
-// Validate checks the field values on ListUserReply with the rules defined in
-// the proto definition for this message. If any rules are violated, the first
-// error encountered is returned, or nil if there are no violations.
-func (m *ListUserReply) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on ListUserReply with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// result is a list of violation errors wrapped in ListUserReplyMultiError, or
-// nil if none found.
-func (m *ListUserReply) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *ListUserReply) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	// no validation rules for Total
-
-	for idx, item := range m.GetUsers() {
-		_, _ = idx, item
-
-		if all {
-			switch v := interface{}(item).(type) {
-			case interface{ ValidateAll() error }:
-				if err := v.ValidateAll(); err != nil {
-					errors = append(errors, ListUserReplyValidationError{
-						field:  fmt.Sprintf("Users[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			case interface{ Validate() error }:
-				if err := v.Validate(); err != nil {
-					errors = append(errors, ListUserReplyValidationError{
-						field:  fmt.Sprintf("Users[%v]", idx),
-						reason: "embedded message failed validation",
-						cause:  err,
-					})
-				}
-			}
-		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
-			if err := v.Validate(); err != nil {
-				return ListUserReplyValidationError{
-					field:  fmt.Sprintf("Users[%v]", idx),
-					reason: "embedded message failed validation",
-					cause:  err,
-				}
-			}
-		}
-
-	}
-
-	if len(errors) > 0 {
-		return ListUserReplyMultiError(errors)
-	}
-
-	return nil
-}
-
-// ListUserReplyMultiError is an error wrapping multiple validation errors
-// returned by ListUserReply.ValidateAll() if the designated constraints
-// aren't met.
-type ListUserReplyMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m ListUserReplyMultiError) Error() string {
-	var msgs []string
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m ListUserReplyMultiError) AllErrors() []error { return m }
-
-// ListUserReplyValidationError is the validation error returned by
-// ListUserReply.Validate if the designated constraints aren't met.
-type ListUserReplyValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e ListUserReplyValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e ListUserReplyValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e ListUserReplyValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e ListUserReplyValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e ListUserReplyValidationError) ErrorName() string { return "ListUserReplyValidationError" }
-
-// Error satisfies the builtin error interface
-func (e ListUserReplyValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sListUserReply.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = ListUserReplyValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = ListUserReplyValidationError{}
+} = ListSysUserRequestValidationError{}

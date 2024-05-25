@@ -47,11 +47,11 @@ type SysUserClient interface {
 	// get sysUser by condition
 	GetByCondition(ctx context.Context, in *GetSysUserByConditionRequest, opts ...grpc.CallOption) (*GetSysUserByConditionReply, error)
 	// list of user by batch id
-	ListByIDs(ctx context.Context, in *ListUserByIDsRequest, opts ...grpc.CallOption) (*ListUserByIDsReply, error)
+	ListByIDs(ctx context.Context, in *ListSysUserByIDsRequest, opts ...grpc.CallOption) (*ListSysUserByIDsReply, error)
 	// list user by last id
-	ListByLastID(ctx context.Context, in *ListUserByLastIDRequest, opts ...grpc.CallOption) (*ListUserByLastIDReply, error)
+	ListByLastID(ctx context.Context, in *ListSysUserByLastIDRequest, opts ...grpc.CallOption) (*ListSysUserByLastIDReply, error)
 	// list of user by query parameters
-	List(ctx context.Context, in *ListUserRequest, opts ...grpc.CallOption) (*ListUserReply, error)
+	List(ctx context.Context, in *ListSysUserRequest, opts ...grpc.CallOption) (*ListSysUserReply, error)
 }
 
 type sysUserClient struct {
@@ -116,8 +116,8 @@ func (c *sysUserClient) GetByCondition(ctx context.Context, in *GetSysUserByCond
 	return out, nil
 }
 
-func (c *sysUserClient) ListByIDs(ctx context.Context, in *ListUserByIDsRequest, opts ...grpc.CallOption) (*ListUserByIDsReply, error) {
-	out := new(ListUserByIDsReply)
+func (c *sysUserClient) ListByIDs(ctx context.Context, in *ListSysUserByIDsRequest, opts ...grpc.CallOption) (*ListSysUserByIDsReply, error) {
+	out := new(ListSysUserByIDsReply)
 	err := c.cc.Invoke(ctx, SysUser_ListByIDs_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -125,8 +125,8 @@ func (c *sysUserClient) ListByIDs(ctx context.Context, in *ListUserByIDsRequest,
 	return out, nil
 }
 
-func (c *sysUserClient) ListByLastID(ctx context.Context, in *ListUserByLastIDRequest, opts ...grpc.CallOption) (*ListUserByLastIDReply, error) {
-	out := new(ListUserByLastIDReply)
+func (c *sysUserClient) ListByLastID(ctx context.Context, in *ListSysUserByLastIDRequest, opts ...grpc.CallOption) (*ListSysUserByLastIDReply, error) {
+	out := new(ListSysUserByLastIDReply)
 	err := c.cc.Invoke(ctx, SysUser_ListByLastID_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -134,8 +134,8 @@ func (c *sysUserClient) ListByLastID(ctx context.Context, in *ListUserByLastIDRe
 	return out, nil
 }
 
-func (c *sysUserClient) List(ctx context.Context, in *ListUserRequest, opts ...grpc.CallOption) (*ListUserReply, error) {
-	out := new(ListUserReply)
+func (c *sysUserClient) List(ctx context.Context, in *ListSysUserRequest, opts ...grpc.CallOption) (*ListSysUserReply, error) {
+	out := new(ListSysUserReply)
 	err := c.cc.Invoke(ctx, SysUser_List_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -160,11 +160,11 @@ type SysUserServer interface {
 	// get sysUser by condition
 	GetByCondition(context.Context, *GetSysUserByConditionRequest) (*GetSysUserByConditionReply, error)
 	// list of user by batch id
-	ListByIDs(context.Context, *ListUserByIDsRequest) (*ListUserByIDsReply, error)
+	ListByIDs(context.Context, *ListSysUserByIDsRequest) (*ListSysUserByIDsReply, error)
 	// list user by last id
-	ListByLastID(context.Context, *ListUserByLastIDRequest) (*ListUserByLastIDReply, error)
+	ListByLastID(context.Context, *ListSysUserByLastIDRequest) (*ListSysUserByLastIDReply, error)
 	// list of user by query parameters
-	List(context.Context, *ListUserRequest) (*ListUserReply, error)
+	List(context.Context, *ListSysUserRequest) (*ListSysUserReply, error)
 	mustEmbedUnimplementedSysUserServer()
 }
 
@@ -190,13 +190,13 @@ func (UnimplementedSysUserServer) GetByID(context.Context, *GetSysUserByIDReques
 func (UnimplementedSysUserServer) GetByCondition(context.Context, *GetSysUserByConditionRequest) (*GetSysUserByConditionReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetByCondition not implemented")
 }
-func (UnimplementedSysUserServer) ListByIDs(context.Context, *ListUserByIDsRequest) (*ListUserByIDsReply, error) {
+func (UnimplementedSysUserServer) ListByIDs(context.Context, *ListSysUserByIDsRequest) (*ListSysUserByIDsReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListByIDs not implemented")
 }
-func (UnimplementedSysUserServer) ListByLastID(context.Context, *ListUserByLastIDRequest) (*ListUserByLastIDReply, error) {
+func (UnimplementedSysUserServer) ListByLastID(context.Context, *ListSysUserByLastIDRequest) (*ListSysUserByLastIDReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListByLastID not implemented")
 }
-func (UnimplementedSysUserServer) List(context.Context, *ListUserRequest) (*ListUserReply, error) {
+func (UnimplementedSysUserServer) List(context.Context, *ListSysUserRequest) (*ListSysUserReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
 }
 func (UnimplementedSysUserServer) mustEmbedUnimplementedSysUserServer() {}
@@ -321,7 +321,7 @@ func _SysUser_GetByCondition_Handler(srv interface{}, ctx context.Context, dec f
 }
 
 func _SysUser_ListByIDs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListUserByIDsRequest)
+	in := new(ListSysUserByIDsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -333,13 +333,13 @@ func _SysUser_ListByIDs_Handler(srv interface{}, ctx context.Context, dec func(i
 		FullMethod: SysUser_ListByIDs_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SysUserServer).ListByIDs(ctx, req.(*ListUserByIDsRequest))
+		return srv.(SysUserServer).ListByIDs(ctx, req.(*ListSysUserByIDsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _SysUser_ListByLastID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListUserByLastIDRequest)
+	in := new(ListSysUserByLastIDRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -351,13 +351,13 @@ func _SysUser_ListByLastID_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: SysUser_ListByLastID_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SysUserServer).ListByLastID(ctx, req.(*ListUserByLastIDRequest))
+		return srv.(SysUserServer).ListByLastID(ctx, req.(*ListSysUserByLastIDRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _SysUser_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListUserRequest)
+	in := new(ListSysUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -369,7 +369,7 @@ func _SysUser_List_Handler(srv interface{}, ctx context.Context, dec func(interf
 		FullMethod: SysUser_List_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(SysUserServer).List(ctx, req.(*ListUserRequest))
+		return srv.(SysUserServer).List(ctx, req.(*ListSysUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
