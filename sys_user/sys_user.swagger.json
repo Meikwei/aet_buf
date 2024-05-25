@@ -186,6 +186,76 @@
         ]
       }
     },
+    "/v1/sys_user/listByIDs": {
+      "post": {
+        "summary": "通过ID批量获取用户",
+        "operationId": "list_sys_user_by_ids",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/sys_userListUserByIDsReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uint64"
+              }
+            }
+          }
+        ],
+        "tags": [
+          "sys_user"
+        ]
+      }
+    },
+    "/v1/sys_user/listByLastID": {
+      "post": {
+        "summary": "通过最后ID获取用户列表",
+        "operationId": "list_sys_user_by_last_id",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/sys_userListUserByLastIDReply"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/sys_userListUserByLastIDRequest"
+            }
+          }
+        ],
+        "tags": [
+          "sys_user"
+        ]
+      }
+    },
     "/v1/sys_user/update/{id}": {
       "put": {
         "summary": "通过ID更新用户",
@@ -229,39 +299,6 @@
     }
   },
   "definitions": {
-    "aet_bufcommonValue": {
-      "type": "object",
-      "properties": {
-        "intValue": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "floatValue": {
-          "type": "number",
-          "format": "float"
-        },
-        "stringValue": {
-          "type": "string"
-        },
-        "boolValue": {
-          "type": "boolean"
-        },
-        "bytesValue": {
-          "type": "string",
-          "format": "byte"
-        },
-        "dateValue": {
-          "type": "string",
-          "format": "date-time",
-          "title": "用于单个日期"
-        },
-        "dateRange": {
-          "$ref": "#/definitions/commonDateRange",
-          "title": "用于日期范围"
-        }
-      },
-      "title": "Value消息类型，用于封装不同数据类型的值"
-    },
     "commonColumn": {
       "type": "object",
       "properties": {
@@ -270,16 +307,16 @@
           "title": "column name"
         },
         "exp": {
-          "$ref": "#/definitions/commonOperator",
-          "title": "expressions, default to EQUAL when the value is not set"
+          "type": "string",
+          "title": "expressions, which default to = when the value is null, have =, !=, \u003e, \u003e=, \u003c, \u003c=, like, in"
         },
         "value": {
-          "$ref": "#/definitions/aet_bufcommonValue",
-          "title": "column value, represented as a Value message"
+          "type": "string",
+          "title": "column value"
         },
         "logic": {
-          "$ref": "#/definitions/commonLogicType",
-          "title": "logical type, defaults to AND when value is not set"
+          "type": "string",
+          "title": "logical type, defaults to and when value is null, only \u0026(and), ||(or)"
         }
       },
       "title": "Column消息类型，用于表示数据库查询条件中的列名、条件表达式、列值以及逻辑连接方式"
@@ -296,44 +333,6 @@
           "title": "query conditions"
         }
       }
-    },
-    "commonDateRange": {
-      "type": "object",
-      "properties": {
-        "startDate": {
-          "type": "string",
-          "format": "date-time"
-        },
-        "endDate": {
-          "type": "string",
-          "format": "date-time"
-        }
-      },
-      "title": "DateRange消息类型，用于表示日期范围"
-    },
-    "commonLogicType": {
-      "type": "string",
-      "enum": [
-        "AND",
-        "OR"
-      ],
-      "default": "AND",
-      "title": "枚举类型定义逻辑连接方式"
-    },
-    "commonOperator": {
-      "type": "string",
-      "enum": [
-        "EQUAL",
-        "NOT_EQUAL",
-        "GREATER_THAN",
-        "GREATER_THAN_OR_EQUAL",
-        "LESS_THAN",
-        "LESS_THAN_OR_EQUAL",
-        "LIKE",
-        "IN"
-      ],
-      "default": "EQUAL",
-      "title": "枚举类型定义操作符，以替代原始字符串"
     },
     "commonParams": {
       "type": "object",
@@ -470,6 +469,65 @@
       "properties": {
         "sysUser": {
           "$ref": "#/definitions/sys_userSysUser"
+        }
+      }
+    },
+    "sys_userListUserByIDsReply": {
+      "type": "object",
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/sys_userSysUser"
+          }
+        }
+      }
+    },
+    "sys_userListUserByLastIDReply": {
+      "type": "object",
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/sys_userSysUser"
+          }
+        }
+      }
+    },
+    "sys_userListUserByLastIDRequest": {
+      "type": "object",
+      "properties": {
+        "lastID": {
+          "type": "string",
+          "format": "uint64",
+          "title": "last id"
+        },
+        "limit": {
+          "type": "integer",
+          "format": "int64",
+          "title": "limit size per page"
+        },
+        "sort": {
+          "type": "string",
+          "description": "sort by column name of table, default is -id, the - sign indicates descending order."
+        }
+      }
+    },
+    "sys_userListUserReply": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "string",
+          "format": "int64"
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/sys_userSysUser"
+          }
         }
       }
     },

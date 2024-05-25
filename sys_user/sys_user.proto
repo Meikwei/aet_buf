@@ -91,7 +91,35 @@ service sysUser {
       tags: ["sys_user"]
     };
   }
+    // list of user by batch id
+    rpc ListByIDs(ListUserByIDsRequest) returns (ListUserByIDsReply) {
+      option (google.api.http)={
+        post: "/v1/sys_user/listByIDs",
+        body:"ids"
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "通过ID批量获取用户"
+        operation_id: "list_sys_user_by_ids"
+        tags: ["sys_user"]
+    };
+  }
 
+    // list user by last id
+    rpc ListByLastID(ListUserByLastIDRequest) returns (ListUserByLastIDReply) {
+      option (google.api.http)={
+        post: "/v1/sys_user/listByLastID",
+        body:"*"
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        summary: "通过最后ID获取用户列表"
+        operation_id: "list_sys_user_by_last_id"
+        tags: ["sys_user"]
+    };
+
+  }
+  
+    // list of user by query parameters
+    rpc List(ListUserRequest) returns (ListUserReply) {}
 }
 
 // Some notes on defining fields under message:
@@ -181,4 +209,29 @@ message ListSysUserReply {
   repeated SysUser sysUsers = 2;
 }
 
+message ListUserByIDsRequest {
+  repeated uint64 ids = 1 [(validate.rules).repeated.min_items = 1];
+}
 
+message ListUserByIDsReply {
+  repeated SysUser users = 1;
+}
+
+message ListUserByLastIDRequest {
+  uint64 lastID = 1; // last id
+  uint32 limit = 2 [(validate.rules).uint32.gt = 0]; // limit size per page
+  string sort = 3; // sort by column name of table, default is -id, the - sign indicates descending order.
+}
+
+message ListUserByLastIDReply {
+  repeated SysUser users = 1;
+}
+
+message ListUserRequest {
+  common.Params params = 1;
+}
+
+message ListUserReply {
+  int64 total =1;
+  repeated SysUser users = 2;
+}

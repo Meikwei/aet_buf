@@ -25,6 +25,9 @@ const (
 	SysUser_UpdateByID_FullMethodName     = "/aet_buf.sys_user.sysUser/UpdateByID"
 	SysUser_GetByID_FullMethodName        = "/aet_buf.sys_user.sysUser/GetByID"
 	SysUser_GetByCondition_FullMethodName = "/aet_buf.sys_user.sysUser/GetByCondition"
+	SysUser_ListByIDs_FullMethodName      = "/aet_buf.sys_user.sysUser/ListByIDs"
+	SysUser_ListByLastID_FullMethodName   = "/aet_buf.sys_user.sysUser/ListByLastID"
+	SysUser_List_FullMethodName           = "/aet_buf.sys_user.sysUser/List"
 )
 
 // SysUserClient is the client API for SysUser service.
@@ -43,6 +46,12 @@ type SysUserClient interface {
 	GetByID(ctx context.Context, in *GetSysUserByIDRequest, opts ...grpc.CallOption) (*GetSysUserByIDReply, error)
 	// get sysUser by condition
 	GetByCondition(ctx context.Context, in *GetSysUserByConditionRequest, opts ...grpc.CallOption) (*GetSysUserByConditionReply, error)
+	// list of user by batch id
+	ListByIDs(ctx context.Context, in *ListUserByIDsRequest, opts ...grpc.CallOption) (*ListUserByIDsReply, error)
+	// list user by last id
+	ListByLastID(ctx context.Context, in *ListUserByLastIDRequest, opts ...grpc.CallOption) (*ListUserByLastIDReply, error)
+	// list of user by query parameters
+	List(ctx context.Context, in *ListUserRequest, opts ...grpc.CallOption) (*ListUserReply, error)
 }
 
 type sysUserClient struct {
@@ -107,6 +116,33 @@ func (c *sysUserClient) GetByCondition(ctx context.Context, in *GetSysUserByCond
 	return out, nil
 }
 
+func (c *sysUserClient) ListByIDs(ctx context.Context, in *ListUserByIDsRequest, opts ...grpc.CallOption) (*ListUserByIDsReply, error) {
+	out := new(ListUserByIDsReply)
+	err := c.cc.Invoke(ctx, SysUser_ListByIDs_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sysUserClient) ListByLastID(ctx context.Context, in *ListUserByLastIDRequest, opts ...grpc.CallOption) (*ListUserByLastIDReply, error) {
+	out := new(ListUserByLastIDReply)
+	err := c.cc.Invoke(ctx, SysUser_ListByLastID_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *sysUserClient) List(ctx context.Context, in *ListUserRequest, opts ...grpc.CallOption) (*ListUserReply, error) {
+	out := new(ListUserReply)
+	err := c.cc.Invoke(ctx, SysUser_List_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SysUserServer is the server API for SysUser service.
 // All implementations must embed UnimplementedSysUserServer
 // for forward compatibility
@@ -123,6 +159,12 @@ type SysUserServer interface {
 	GetByID(context.Context, *GetSysUserByIDRequest) (*GetSysUserByIDReply, error)
 	// get sysUser by condition
 	GetByCondition(context.Context, *GetSysUserByConditionRequest) (*GetSysUserByConditionReply, error)
+	// list of user by batch id
+	ListByIDs(context.Context, *ListUserByIDsRequest) (*ListUserByIDsReply, error)
+	// list user by last id
+	ListByLastID(context.Context, *ListUserByLastIDRequest) (*ListUserByLastIDReply, error)
+	// list of user by query parameters
+	List(context.Context, *ListUserRequest) (*ListUserReply, error)
 	mustEmbedUnimplementedSysUserServer()
 }
 
@@ -147,6 +189,15 @@ func (UnimplementedSysUserServer) GetByID(context.Context, *GetSysUserByIDReques
 }
 func (UnimplementedSysUserServer) GetByCondition(context.Context, *GetSysUserByConditionRequest) (*GetSysUserByConditionReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetByCondition not implemented")
+}
+func (UnimplementedSysUserServer) ListByIDs(context.Context, *ListUserByIDsRequest) (*ListUserByIDsReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListByIDs not implemented")
+}
+func (UnimplementedSysUserServer) ListByLastID(context.Context, *ListUserByLastIDRequest) (*ListUserByLastIDReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListByLastID not implemented")
+}
+func (UnimplementedSysUserServer) List(context.Context, *ListUserRequest) (*ListUserReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method List not implemented")
 }
 func (UnimplementedSysUserServer) mustEmbedUnimplementedSysUserServer() {}
 
@@ -269,6 +320,60 @@ func _SysUser_GetByCondition_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SysUser_ListByIDs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListUserByIDsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SysUserServer).ListByIDs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SysUser_ListByIDs_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SysUserServer).ListByIDs(ctx, req.(*ListUserByIDsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SysUser_ListByLastID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListUserByLastIDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SysUserServer).ListByLastID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SysUser_ListByLastID_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SysUserServer).ListByLastID(ctx, req.(*ListUserByLastIDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SysUser_List_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SysUserServer).List(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SysUser_List_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SysUserServer).List(ctx, req.(*ListUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SysUser_ServiceDesc is the grpc.ServiceDesc for SysUser service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -299,6 +404,18 @@ var SysUser_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetByCondition",
 			Handler:    _SysUser_GetByCondition_Handler,
+		},
+		{
+			MethodName: "ListByIDs",
+			Handler:    _SysUser_ListByIDs_Handler,
+		},
+		{
+			MethodName: "ListByLastID",
+			Handler:    _SysUser_ListByLastID_Handler,
+		},
+		{
+			MethodName: "List",
+			Handler:    _SysUser_List_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
